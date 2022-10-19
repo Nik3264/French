@@ -1,0 +1,46 @@
+body {
+    background: url("./img/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+:root {
+    --green: rgba(51, 131, 09, 0.75);
+    --light-green: rgba(201, 212, 108, 0.5);
+    --carrot: rgba(228, 135, 22, 1);
+    --light-carrot: rgba(250, 171, 1, 0.8);
+    --sand: rgba(134, 111, 104, 0.8);
+  }
+
+  .container{
+    margin: 50px auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 75vw;
+    height: 200px;
+    background-color:rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    border-radius:5px;
+  }
+
+.card{
+    width:230px;
+    margin: 20px;
+    font-size: 5em;
+    text-align: center;
+    color: white;
+    background-color: var(--carrot);
+    word-wrap: break-word;
+    border-radius:5px;
+}
+
+.card__button{
+    width: 150px;
+    height: 80px;
+    margin: 20px;
+    color: white;
+    font-size: 2em;
+    background-color:var(--green);
+    border-radius:5px;
+}
