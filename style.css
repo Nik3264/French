@@ -18,21 +18,29 @@ body {
     align-items: center;
     justify-content: center;
     width: 75vw;
-    height: 200px;
     background-color:rgba(255,255,255,0.1);
     backdrop-filter: blur(5px);
     border-radius:5px;
   }
 
-.card{
+.card, .card__translate{
     width:230px;
     margin: 20px;
-    font-size: 5em;
     text-align: center;
     color: white;
     background-color: var(--carrot);
     word-wrap: break-word;
     border-radius:5px;
+}
+
+.card {
+    font-size: 3em;
+}
+
+.card__translate {
+    width: 80%;
+    max-width: 800px;
+    font-size: 2em;
 }
 
 .card__button{
