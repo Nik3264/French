@@ -1,98 +1,48 @@
 //import {Translate} from'@google-cloud/translate';
+import Numbers from "./numbers.js";
+import {getRandomInt, numberToString} from "./calculation.js";
+const synth = window.speechSynthesis;
 
-
-
-const card = document.querySelector(".card");
-const cardTranslate = document.querySelector(".card__translate");
-const button = document.querySelector(".card__button");
-const buttonSpeak = document.querySelector("#speak");
-let number;
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
+let voices = synth.getVoices();
+synth.onvoiceschanged = () => {
+  voices = synth.getVoices().filter(function (voice) { return voice.name === "Google français"; })[0];
 }
 
-function numberToString(number) {
-  let units = number % 10;
-  const dozens = Math.floor(number / 10) % 10;
-  const hundreds = Math.floor(number / 100) % 10;
-  const thousands = Math.floor(number / 1000) % 10;
+const numbers=new Numbers();
+const namesClasses=[
+  {
+    parent:'main', 
+    startClassName:'start10', 
+    cardClassName:'card10', 
+    translateClassName:'translate10', 
+    soundClassName:'sound10',
+    maxNumber:10,
+  },
+  {
+    parent:'main', 
+    startClassName:'start60', 
+    cardClassName:'card60', 
+    translateClassName:'translate60', 
+    soundClassName:'sound60',
+    maxNumber:60,
+  }
+];
 
-  console.log(units, " ", dozens, " ", hundreds, " ", thousands);
-  const listOfThousands = ["тисяча", "тисячі", "тисяч"];
-  const listOfHundreds = [
-    "сто",
-    "двісті",
-    "триста",
-    "чотириста",
-    "пятсот",
-    "шістсот",
-    "сімсот",
-    "вісімсот",
-    "девятсот",
-  ];
-  const listOfDozens = [
-    "",
-    "двадцять",
-    "тридцять",
-    "сорок",
-    "пятдесят",
-    "шістдесят",
-    "сімдесят",
-    "вісімдесят",
-    "девяносто",
-  ];
-  const listOfTeens = [
-    "одинадцять",
-    "дванадцять",
-    "тринадцять",
-    "чотирнадцять",
-    "пятнадцять",
-    "шістнадцять",
-    "сімнадцять",
-    "вісімнадцять",
-    "девятнадцять",
-  ];
-  const listOfUnits = [
-    "один",
-    "два",
-    "три",
-    "чотири",
-    "пять",
-    "шість",
-    "сім",
-    "вісім",
-    "девять",
-  ];
+namesClasses.map((namesClass)=>{
+  const {parent, startClassName, cardClassName, translateClassName, soundClassName, maxNumber}=namesClass;
+  numbers.render(parent, startClassName, cardClassName, translateClassName, soundClassName, maxNumber);
+});
 
-  let str =
-    (thousands == 1
-      ? listOfThousands[0]
-      : thousands < 5
-      ? listOfUnits[thousands-1] +" " + listOfThousands[1]
-      : listOfUnits[thousands-1] +" " + listOfThousands[2]) + " ";
-  str += (hundreds ? listOfHundreds[hundreds - 1] : "") + " ";
-  str += (dozens ? listOfDozens[dozens - 1] : "") + " ";
-  str += (dozens == 1 ? listOfTeens[units - 1] : "") + " ";
-  units = dozens == 1 ? 0 : units;
-  str += units ? listOfUnits[units - 1] : "";
+const card = document.querySelectorAll(".card");
+const cardTranslate = document.querySelectorAll(".card__translate");
+const button = document.querySelectorAll(".card__button");
+const buttonSpeak = document.querySelectorAll('.all');
 
-  return str;
-}
 
-function showResponse(response) {
-  cardTranslate.innerHTML = response.data.translations[0].translatedText;
-}
-
-button.addEventListener("click", () => {
-  number = getRandomInt(9999);
-  card.innerHTML = number;
-  const strNumber=numberToString(number);
-  console.log(strNumber);
-
+function translateHandler(str){
   let sl="uk";
   let tl="fr";
-  const originalText=strNumber;
+  const originalText=str;
   let translateUrl = "https://translate.googleapis.com/translate_a/single?format=text&client=gtx&sl=" + sl + "&tl=" + tl + "&dt=t&q=" + originalText;
 // sl – язык оригинала, tl – язык для перевода, originalText – текст запроса (можно использовать результат string.match(/.{1,2000}(?=\.)/gi))
   let translatedText = httpGet(translateUrl);
@@ -105,34 +55,35 @@ button.addEventListener("click", () => {
   }
 
   translatedText=translatedText.split(",")[0].replaceAll('[','').replaceAll('\"','');
-  console.log("translatedText",translatedText);
-  cardTranslate.innerHTML=translatedText;
+  return translatedText;
+}
 
-  const synth = window.speechSynthesis;
-  console.log("synth", synth);
-  let voices = synth.getVoices();
-  synth.onvoiceschanged = () => {
-    voices = synth.getVoices().filter(function (voice) { return voice.name === "Google français"; })[0];
+function buttonStartHandler(maxNum, card, cardTranslate, soundButton){
+  const number = getRandomInt(maxNum);
+  card.innerHTML = number;
+  const strNumber=numberToString(number);
+  const numberTranslated = translateHandler(strNumber);
+  cardTranslate.innerHTML=numberTranslated;
 
-    //populateVoices(voices)
-  }
-
-  console.log(voices);
-
-  let utterThis = new SpeechSynthesisUtterance(translatedText);
-    
+  let utterThis = new SpeechSynthesisUtterance(numberTranslated);
   utterThis.volume = 1;
   utterThis.rate = 1;
   utterThis.pitch = 1;
   utterThis.lang = "fr-FR";
-  utterThis.text =translatedText;
-  //speechSynthesis.speak(utterThis);
-
-  console.log("utterThis", utterThis);
-
-  speak.addEventListener("click", ()=>{
+  //utterThis.text = numberTranslated;
+  soundButton.addEventListener("click", ()=>{
     synth.cancel();
     synth.speak(utterThis);
+  });
+
+}
+
+button.forEach((button1,index)=>{
+  let str=+button1.innerText.slice(6);
+  console.log(str);
+  button1.addEventListener("click", () => buttonStartHandler(str, card[index], cardTranslate[index], buttonSpeak[index]));
+});
+
 
    /*         async function speak(txt) {
               await initVoices();
@@ -156,13 +107,3 @@ button.addEventListener("click", () => {
               });
             }
     speak(translatedText);*/
-  });
-
-  //"Google français" Female	French	fr-FR
-
-  //let voice1 = { voiceURI: "Google Franch", name: "Google Franch", lang: "fr-FR", localService: false, default: false };
-
-  //utterThis.voice=voice1;
-
-
-});
