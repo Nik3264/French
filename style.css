@@ -14,6 +14,7 @@ body {
   .container{
     margin: 50px auto;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -23,25 +24,36 @@ body {
     border-radius:5px;
   }
 
-  .wrap, .translate__wrap {
+  .wrap {
     display: flex;
     flex-wrap: nowrap;
     align-items:center;
   }
 
-  .wrap {
-    flex-wrap: wrap;
-    justify-content: center;
+  .translate__wrap {
+    position: relative;
+    width: 340px;
+    height:190px;
   }
 
 .card, .card__translate{
-    width:230px;
-    margin: 20px;
-    text-align: center;
-    color: white;
-    background-color: var(--carrot);
-    word-wrap: break-word;
-    border-radius:5px;
+  position: absolute;
+  padding-top: 30px;
+  backface-visibility: hidden;
+  width: 300px;
+  height:100px;
+  margin: 20px;
+  text-align: center;
+  color: white;
+  background-color: var(--carrot);
+  word-wrap: break-word;
+  border-radius:5px;
+
+  transition: 0.8s;
+  --webkit-transition: 0.8s;
+  -webkit-transition: 0.8s;
+  --moz-transition: 0.8s;
+  transform-style: preserve-3d;
 }
 
 .card {
@@ -49,15 +61,25 @@ body {
 }
 
 .card__translate {
-    width: 80%;
-    max-width: 800px;
     font-size: 2em;
+    transform: rotateY(180deg);
+    color: var(--carrot);
+    background-color:  rgba(255, 255, 255, 0.5);
+}
+
+.rotate {
+  transform: rotateY(180deg);
+}
+
+.show {
+  transform: rotateY(0deg);
 }
 
 .card__button{
-    width: 150px;
-    height: 80px;
+    /*width: 130px;*/
+    height: 50px;
     margin: 20px;
+    padding: 0 10px;
     color: white;
     font-size: 2em;
     background-color:var(--green);
@@ -66,7 +88,7 @@ body {
 
 .all{
   width: 50px;
-  height: 30px;
+  height: 50px;
   margin: 20px;
   color: white;
   font-size: 1.5em;

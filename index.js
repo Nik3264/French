@@ -12,6 +12,14 @@ const numbers=new Numbers();
 const namesClasses=[
   {
     parent:'main', 
+    startClassName:'start9999', 
+    cardClassName:'card9999', 
+    translateClassName:'translate9999', 
+    soundClassName:'sound9999',
+    maxNumber:9999,
+  },
+  {
+    parent:'main', 
     startClassName:'start10', 
     cardClassName:'card10', 
     translateClassName:'translate10', 
@@ -84,6 +92,19 @@ button.forEach((button1,index)=>{
   button1.addEventListener("click", () => buttonStartHandler(str, card[index], cardTranslate[index], buttonSpeak[index]));
 });
 
+card.forEach((card1, index)=>{
+  card1.addEventListener("click", ()=>{
+    card1.classList.add("rotate");
+    cardTranslate[index].classList.add("show");
+  });
+});
+
+cardTranslate.forEach((cardTranslate1, index)=>{
+  cardTranslate1.addEventListener("click",()=>{
+    cardTranslate1.classList.remove("show");
+    card[index].classList.remove("rotate");
+  });
+});
 
    /*         async function speak(txt) {
               await initVoices();

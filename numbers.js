@@ -5,6 +5,26 @@ export default class Numbers {
         <div class="container">
             <div class="wrap">
                 <button class="${startClassName} card__button">start ${maxNumber}</button>
+                <button class="${soundClassName} all">&#128227;</button>
+            </div>
+            <div class="translate__wrap">
+                <div class="${cardClassName} card">5698</div>
+                <div class="${translateClassName} card__translate">OK</div>
+            </div>
+        </div>
+        `;
+        let parentNode=document.querySelector(parent);
+        parentNode.innerHTML+=page;
+    }
+}
+
+/*export default class Numbers {
+
+     render(parent, startClassName, cardClassName, translateClassName, soundClassName, maxNumber){
+        let page= `
+        <div class="container">
+            <div class="wrap">
+                <button class="${startClassName} card__button">start ${maxNumber}</button>
                 <div class="${cardClassName} card">5698</div>
             </div>
             <div class="translate__wrap">
@@ -16,4 +36,4 @@ export default class Numbers {
         let parentNode=document.querySelector(parent);
         parentNode.innerHTML+=page;
     }
-}
+}*/
