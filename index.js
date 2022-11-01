@@ -82,15 +82,6 @@ namesClasses.map((namesClass,i)=>{
   menuItem.render('nav',namesClass.startClassName,namesClass.minNumber, namesClass.maxNumber,i);
 });
 
-
-/*
-menuItem.render('nav','start10',10,0);
-menuItem.render('nav','start20',20,1);
-menuItem.render('nav','start30',30,2);
-menuItem.render('nav','start70',70,3);
-menuItem.render('nav','start100',100,4);
-menuItem.render('nav','start9999',9999,5);
-*/
 const nav=document.querySelector("nav");
 const menu=document.querySelector(".menu");
 const burger=document.querySelector(".burger");
@@ -102,8 +93,6 @@ let card,
     buttonSpeak,
     input,
     number;
-
-
 
 nav.addEventListener("click",(event)=>{
   let target=event.target;
@@ -128,18 +117,11 @@ nav.addEventListener("click",(event)=>{
     console.log("buttonStart ",buttonStart);
     console.log("buttonSpeak ",buttonSpeak);
 
-    //let maxNum=+buttonStart.innerText.slice(6);
-    //let maxNum=maxNumber;
-    //let minNum=minNumber;
-    //console.log(str);
-    //let maxNum=str;
-    //maxNum, card, cardTranslate, buttonSpeak
-
     buttonStart.addEventListener("click", ()=>{
       number = getRandomInt(minNumber,maxNumber);
       if (minNumber===1 && maxNumber===10){
         number*=10;
-        //buttonStart.innerText+="dec";
+        //buttonStart.innerText="десятки";
       }
       console.log("maxNum", maxNumber);
       console.log("card", card);
@@ -147,10 +129,7 @@ nav.addEventListener("click",(event)=>{
       console.log("soundButton", buttonSpeak);
     
       myHandler(number);
-
-
-//this fun
-      
+    
     });
     
 function myHandler(number){

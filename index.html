@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style.css" rel="stylesheet" type="text/css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+    <link href="./css/input.css" rel="stylesheet" type="text/css" />
     <title>Franch</title>
-</head>
-<body>
-    <nav>
-
-    </nav>
+  </head>
+  <body>
+    <header>
+      <div class="header__theme">
+        <form class="form1">
+          <input type="checkbox" id="demo1" name="theme" value="day" checked />
+          <label for="demo1" data-on-label="Day" data-off-label="Night"></label>
+          <!--<input type="radio" id="night" name="theme" value="night"/>
+          <label for="night">night</label>-->
+        </form>
+      </div>
+    </header>
+    <nav></nav>
     <button class="menu hidden">
-        <div class="burger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+      <div class="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </button>
     <main>
-        <!--<div class="container">
+      <!--<div class="container">
             <button class="card__button">start 9999</button>
             <div class="card">5698</div>
             <div class="translate__wrap">
@@ -28,7 +37,8 @@
             </div>
         </div>-->
     </main>
-    
+
     <script type="module" src="./index.js"></script>
-</body>
+    <script src="./theme.js"></script>
+  </body>
 </html>

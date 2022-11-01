@@ -1,0 +1,13 @@
+body {
+    background: url("../img/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  :root {
+    --green: rgba(51, 131, 09, 0.75);
+    --light-green: rgba(201, 212, 108, 0.5);
+    --carrot: rgba(228, 135, 22, 1);
+    --light-carrot: rgba(250, 171, 1, 0.8);
+    --sand: rgba(134, 111, 104, 0.8);
+  }
+  
