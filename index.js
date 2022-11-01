@@ -1,6 +1,8 @@
 //import {Translate} from'@google-cloud/translate';
 import Numbers from "./numbers.js";
+import Menuitem from "./menuitem.js";
 import {getRandomInt, numberToString} from "./calculation.js";
+
 const synth = window.speechSynthesis;
 
 let voices = synth.getVoices();
@@ -8,22 +10,34 @@ synth.onvoiceschanged = () => {
   voices = synth.getVoices().filter(function (voice) { return voice.name === "Google français"; })[0];
 }
 
+const menuItem=new Menuitem();
 const numbers=new Numbers();
 const namesClasses=[
-  {
-    parent:'main', 
-    startClassName:'start9999', 
-    cardClassName:'card9999', 
-    translateClassName:'translate9999', 
-    soundClassName:'sound9999',
-    maxNumber:9999,
-  },
   {
     parent:'main', 
     startClassName:'start10', 
     cardClassName:'card10', 
     translateClassName:'translate10', 
     soundClassName:'sound10',
+    minNumber:0,
+    maxNumber:10,
+  },
+  {
+    parent:'main', 
+    startClassName:'start20', 
+    cardClassName:'card20', 
+    translateClassName:'translate20', 
+    soundClassName:'sound20',
+    minNumber:10,
+    maxNumber:20,
+  },
+  {
+    parent:'main', 
+    startClassName:'start30', 
+    cardClassName:'card30', 
+    translateClassName:'translate30', 
+    soundClassName:'sound30',
+    minNumber:1,
     maxNumber:10,
   },
   {
@@ -32,19 +46,166 @@ const namesClasses=[
     cardClassName:'card60', 
     translateClassName:'translate60', 
     soundClassName:'sound60',
+    minNumber:20,
     maxNumber:60,
-  }
+  },
+  {
+    parent:'main', 
+    startClassName:'start100', 
+    cardClassName:'card100', 
+    translateClassName:'translate100', 
+    soundClassName:'sound100',
+    minNumber:80,
+    maxNumber:100,
+  },
+  {
+    parent:'main', 
+    startClassName:'start9999', 
+    cardClassName:'card9999', 
+    translateClassName:'translate9999', 
+    soundClassName:'sound9999',
+    minNumber:0,
+    maxNumber:9999,
+  },
+  {
+    parent:'main', 
+    startClassName:'input', 
+    cardClassName:'cardinput', 
+    translateClassName:'translateinput', 
+    soundClassName:'soundinput',
+    minNumber:0,
+    maxNumber:1,
+  },
 ];
 
-namesClasses.map((namesClass)=>{
-  const {parent, startClassName, cardClassName, translateClassName, soundClassName, maxNumber}=namesClass;
-  numbers.render(parent, startClassName, cardClassName, translateClassName, soundClassName, maxNumber);
+namesClasses.map((namesClass,i)=>{
+  menuItem.render('nav',namesClass.startClassName,namesClass.minNumber, namesClass.maxNumber,i);
 });
 
-const card = document.querySelectorAll(".card");
-const cardTranslate = document.querySelectorAll(".card__translate");
-const button = document.querySelectorAll(".card__button");
-const buttonSpeak = document.querySelectorAll('.all');
+
+/*
+menuItem.render('nav','start10',10,0);
+menuItem.render('nav','start20',20,1);
+menuItem.render('nav','start30',30,2);
+menuItem.render('nav','start70',70,3);
+menuItem.render('nav','start100',100,4);
+menuItem.render('nav','start9999',9999,5);
+*/
+const nav=document.querySelector("nav");
+const menu=document.querySelector(".menu");
+const burger=document.querySelector(".burger");
+const main=document.querySelector("main");
+
+let card,
+    cardTranslate,
+    buttonStart,
+    buttonSpeak,
+    input,
+    number;
+
+
+
+nav.addEventListener("click",(event)=>{
+  let target=event.target;
+  let index = +target.getAttribute("number");
+  console.log(index);
+  let isInput = index===6 ? true : false;
+  console.log(isInput);
+
+  nav.classList.add("slide__left");
+
+  const {parent, startClassName, cardClassName, translateClassName, soundClassName,minNumber, maxNumber}=namesClasses[index];
+  numbers.render(parent, startClassName, cardClassName, translateClassName, soundClassName,minNumber, maxNumber, isInput);
+
+  setTimeout(()=>{
+    card = document.querySelector(".card");
+    cardTranslate = document.querySelector(".card__translate");
+    buttonStart = document.querySelector(".start");
+    input=document.querySelector("input");
+    buttonSpeak = document.querySelector('.all');
+    console.log("card ",card);
+    console.log("cardTranslate ",cardTranslate);
+    console.log("buttonStart ",buttonStart);
+    console.log("buttonSpeak ",buttonSpeak);
+
+    //let maxNum=+buttonStart.innerText.slice(6);
+    //let maxNum=maxNumber;
+    //let minNum=minNumber;
+    //console.log(str);
+    //let maxNum=str;
+    //maxNum, card, cardTranslate, buttonSpeak
+
+    buttonStart.addEventListener("click", ()=>{
+      number = getRandomInt(minNumber,maxNumber);
+      if (minNumber===1 && maxNumber===10){
+        number*=10;
+        //buttonStart.innerText+="dec";
+      }
+      console.log("maxNum", maxNumber);
+      console.log("card", card);
+      console.log("cardTranslate", cardTranslate);
+      console.log("soundButton", buttonSpeak);
+    
+      myHandler(number);
+
+
+//this fun
+      
+    });
+    
+function myHandler(number){
+  console.log(number);
+  card.innerHTML = number;
+  const strNumber=numberToString(number);
+  console.log(strNumber);
+  const numberTranslated = translateHandler(strNumber);
+  cardTranslate.innerHTML=numberTranslated;
+
+  let utterThis = new SpeechSynthesisUtterance(numberTranslated);
+  utterThis.volume = 1;
+  utterThis.rate = 1;
+  utterThis.pitch = 1;
+  utterThis.lang = "fr-FR";
+  //utterThis.text = numberTranslated;
+  buttonSpeak.addEventListener("click", ()=>{
+    synth.cancel();
+    synth.speak(utterThis);
+  });
+}
+    input.addEventListener("input", ()=>{
+      console.log(input.value);
+      number=input.value;
+      myHandler(number);
+    });
+
+    card.addEventListener("click", ()=>{
+      card.classList.add("rotate");
+      cardTranslate.classList.add("show");
+    });
+    
+    cardTranslate.addEventListener("click",()=>{
+      cardTranslate.classList.remove("show");
+      card.classList.remove("rotate");
+    });
+
+  },50);
+
+  main.classList.add("slide__top");
+  menu.classList.remove("hidden");
+  burger.classList.add("open");
+  burger.classList.remove("open__away");
+}); //button.addEventListener
+
+menu.addEventListener("click",()=>{
+  console.log("menu");
+  
+  burger.classList.remove("open");
+  burger.classList.add("open__away");
+  main.innerHTML="";
+  menu.classList.add("hidden");
+  main.classList.remove("slide__top");
+  nav.classList.remove("slide__left");
+});
 
 
 function translateHandler(str){
@@ -66,45 +227,9 @@ function translateHandler(str){
   return translatedText;
 }
 
-function buttonStartHandler(maxNum, card, cardTranslate, soundButton){
-  const number = getRandomInt(maxNum);
-  card.innerHTML = number;
-  const strNumber=numberToString(number);
-  const numberTranslated = translateHandler(strNumber);
-  cardTranslate.innerHTML=numberTranslated;
 
-  let utterThis = new SpeechSynthesisUtterance(numberTranslated);
-  utterThis.volume = 1;
-  utterThis.rate = 1;
-  utterThis.pitch = 1;
-  utterThis.lang = "fr-FR";
-  //utterThis.text = numberTranslated;
-  soundButton.addEventListener("click", ()=>{
-    synth.cancel();
-    synth.speak(utterThis);
-  });
 
-}
 
-button.forEach((button1,index)=>{
-  let str=+button1.innerText.slice(6);
-  console.log(str);
-  button1.addEventListener("click", () => buttonStartHandler(str, card[index], cardTranslate[index], buttonSpeak[index]));
-});
-
-card.forEach((card1, index)=>{
-  card1.addEventListener("click", ()=>{
-    card1.classList.add("rotate");
-    cardTranslate[index].classList.add("show");
-  });
-});
-
-cardTranslate.forEach((cardTranslate1, index)=>{
-  cardTranslate1.addEventListener("click",()=>{
-    cardTranslate1.classList.remove("show");
-    card[index].classList.remove("rotate");
-  });
-});
 
    /*         async function speak(txt) {
               await initVoices();

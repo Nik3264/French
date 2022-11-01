@@ -1,6 +1,6 @@
 
-export function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+export function getRandomInt(min=0,max) {
+  return Math.floor(Math.random() * (max - min)) + min; // return Math.floor(Math.random() * max);
   }
   
  export function numberToString(number) {
@@ -23,7 +23,7 @@ export function getRandomInt(max) {
       "девятсот",
     ];
     const listOfDozens = [
-      "",
+      "десять",
       "двадцять",
       "тридцять",
       "сорок",
@@ -57,14 +57,18 @@ export function getRandomInt(max) {
     ];
   
     let str =
-      (thousands == 1
+      (thousands == 0
+        ? ''
+        : 
+        thousands == 1
         ? listOfThousands[0]
         : thousands < 5
         ? listOfUnits[thousands-1] +" " + listOfThousands[1]
         : listOfUnits[thousands-1] +" " + listOfThousands[2]) + " ";
     str += (hundreds ? listOfHundreds[hundreds - 1] : "") + " ";
-    str += (dozens ? listOfDozens[dozens - 1] : "") + " ";
-    str += (dozens == 1 ? listOfTeens[units - 1] : "") + " ";
+    str += (  (dozens>1) ? listOfDozens[dozens - 1] : "") + " ";
+    str += ((dozens == 1 && units>0 )? listOfTeens[units - 1] : "") + " ";
+    str += ((dozens == 1 && units==0 )? listOfDozens[dozens - 1] : "") + " ";
     units = dozens == 1 ? 0 : units;
     str += units ? listOfUnits[units - 1] : "";
   
