@@ -110,7 +110,7 @@ nav.addEventListener("click",(event)=>{
     card = document.querySelector(".card");
     cardTranslate = document.querySelector(".card__translate");
     buttonStart = document.querySelector(".start");
-    input=document.querySelector("input");
+    input=document.querySelector("#input__text");
     buttonSpeak = document.querySelector('.all');
     console.log("card ",card);
     console.log("cardTranslate ",cardTranslate);

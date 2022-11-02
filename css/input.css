@@ -1,6 +1,9 @@
-form {margin-left: 280px;}
+.form1 {
+    /*margin-left: 80vw;*/
+}
+
 label {	margin: 2px;}
-input {	display: none;}
+input#demo1 {	display: none;}
 input+label,
 input+label::before,
 input+label::after {
