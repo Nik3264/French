@@ -153,6 +153,7 @@ function myHandler(number){
 }
     input.addEventListener("input", ()=>{
       console.log(input.value);
+      input.value=input.value.replace (/\D/g, '');
       number=input.value;
       myHandler(number);
     });
